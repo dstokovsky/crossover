@@ -11,6 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ReportController@index');
+
+Route::auth();
+
+Route::get('/reports', 'ReportController@index');
+
+Route::get('/reports/{report}', 'ReportController@view');
+
+Route::post('/reports', 'ReportController@store');
+
+Route::delete('/reports/{report}', 'ReportController@destroy');
+
+Route::get('/users', 'UserController@index');
+
+Route::get('/users/{user}', 'UserController@view');
+
+Route::post('/users', 'UserController@store');
+
+Route::delete('/users/{user}', 'UserController@destroy');
