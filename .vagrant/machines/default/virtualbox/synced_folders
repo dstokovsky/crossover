@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/crossover":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/crossover","hostpath":"/Users/denis/src/crossover","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/denis/src/crossover","disabled":false,"__vagrantfile":true}}}
