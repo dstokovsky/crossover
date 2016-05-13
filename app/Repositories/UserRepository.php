@@ -7,13 +7,24 @@ use App\User;
 class UserRepository
 {
     /**
-     * Get all of the tasks for a given user.
+     * Get all the patients.
      *
      * @param  void
      * @return Collection
      */
-    public function all()
+    public function patients()
     {
-        return [];
+        return User::role('patient')->get();
+    }
+    
+    /**
+     * Get all the operators.
+     *
+     * @param  void
+     * @return Collection
+     */
+    public function operators()
+    {
+        return User::role('operator')->get();
     }
 }

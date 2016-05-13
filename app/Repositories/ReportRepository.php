@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\User;
+use App\Report;
 
 class ReportRepository
 {
@@ -14,6 +15,6 @@ class ReportRepository
      */
     public function all(User $user)
     {
-        return $user->reports()->orderBy('created_at', 'desc')->get();
+        return $user->is('operator') ? Report::all() : $user->reports();
     }
 }

@@ -10,63 +10,10 @@
         <!-- Display Validation Errors -->
         @include('common.errors')
 
-        <!-- New Task Form -->
-        <form action="{{ url('reports') }}" method="POST" class="form-horizontal">
-            {!! csrf_field() !!}
-
-            <!-- Task Name -->
-            <div class="form-group">
-                <label for="report-user-id" class="col-sm-3 control-label">User</label>
-
-                <div class="col-sm-6">
-                    <input type="text" name="user_id" id="report-user-id" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label for="report-procedure" class="col-sm-3 control-label">Procedure</label>
-                
-                <div class="col-sm-6">
-                    <input type="text" name="procedure" id="report-procedure" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="report-statement" class="col-sm-3 control-label">Statement</label>
-                
-                <div class="col-sm-6">
-                    <input type="text" name="statement" id="report-statement" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="report-findings" class="col-sm-3 control-label">Findings</label>
-                
-                <div class="col-sm-6">
-                    <input type="text" name="findings" id="report-findings" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label for="report-impression" class="col-sm-3 control-label">Impression</label>
-                
-                <div class="col-sm-6">
-                    <input type="text" name="impression" id="report-impression" class="form-control">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="report-conclusion" class="col-sm-3 control-label">Conclusion</label>
-                
-                <div class="col-sm-6">
-                    <textarea name="conclusion" id="report-conclusion" class="form-control"></textarea>
-                </div>
-            </div>
-
-            <!-- Add Report Button -->
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-6">
-                    <button type="submit" class="btn btn-default">
-                        <i class="fa fa-plus"></i> Add Report
-                    </button>
-                </div>
-            </div>
-        </form>
+        <!-- Display Report Create/Edit Form -->
+        {!! Form::open(['url' => 'reports']) !!}
+        @include('reports.form', ['submitButtonText' => 'Add'])
+        {!! Form::close() !!}
     </div>
 
     <!-- Current Tasks -->
@@ -82,7 +29,9 @@
                     <!-- Table Headings -->
                     <thead>
                         <th>MRN</th>
-                        <th>User</th>
+                        <th>Patient</th>
+                        <th>Procedure</th>
+                        <th>Date</th>
                         <th>&nbsp;</th>
                     </thead>
 
@@ -96,17 +45,50 @@
                                 </td>
                                 <!-- User Name -->
                                 <td class="table-text">
-                                    <div>{{ $report->user()->name }}</div>
+                                    <div>{{ $report->user->name }}</div>
+                                </td>
+                                <!-- Goal of Report -->
+                                <td class="table-text">
+                                    <div>{{ str_limit($report->procedure, 50) }}</div>
+                                </td>
+                                <!-- Report's Date -->
+                                <td class="table-text">
+                                    <div>{{ date('F d, Y H:i', strtotime($report->created_at)) }}</div>
                                 </td>
 
                                 <td>
                                     <form action="{{ url('reports/'.$report->id) }}" method="POST">
                                         {!! csrf_field() !!}
+                                        
+                                        @permission('delete.report')
                                         {!! method_field('DELETE') !!}
-
+                                        @endpermission
+                                        
+                                        @permission('view.report')
+                                        <a href="{{ url('reports/' . $report->id . '/view') }}" class="btn btn-default"><i class="fa fa-btn fa-user"></i>View</a>
+                                        @endpermission
+                                        
+                                        @permission('update.report')
+                                        <a href="{{ url('reports/' . $report->id . '/edit') }}" class="btn btn-success"><i class="fa fa-btn fa-plus"></i>Edit</a>
+                                        @endpermission
+                                        
+                                        @permission('send.report')
+                                        <a href="{{ url('reports/' . $report->user->id . '/send') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Send Pass Code</a>
+                                        @endpermission
+                                        
+                                        @permission('export.pdf.report')
+                                        <a href="{{ url('reports/' . $report->id . '/pdf') }}" class="btn btn-success"><i class="fa fa-btn fa-refresh"></i>Export to PDF</a>
+                                        @endpermission
+                                        
+                                        @permission('export.mail.report')
+                                        <a href="{{ url('reports/' . $report->id . '/mail') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Mail Me</a>
+                                        @endpermission
+                                        
+                                        @permission('delete.report')
                                         <button type="submit" id="delete-task-{{ $report->id }}" class="btn btn-danger">
                                             <i class="fa fa-btn fa-trash"></i>Delete
                                         </button>
+                                        @endpermission
                                     </form>
                                 </td>
                             </tr>

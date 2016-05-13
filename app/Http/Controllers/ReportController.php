@@ -18,7 +18,6 @@ class ReportController extends Controller
 
     public function __construct(ReportRepository $reports)
     {
-        $this->middleware('auth');
         $this->reports = $reports;
     }
     
@@ -34,12 +33,12 @@ class ReportController extends Controller
     }
     
     /**
-     * Create a new task.
+     * Create/update a report.
      *
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Report $report)
     {
         $this->validate($request, [
             'user_id' => 'required',
@@ -50,20 +49,37 @@ class ReportController extends Controller
             'conclusion' => 'required',
         ]);
         
-        $request->user()->reports()->create([
-            'user_id' => $request->user_id,
-            'procedure' => $request->procedure,
-            'statement' => $request->statement,
-            'findings' => $request->findings,
-            'impression' => $request->impression,
-            'conclusion' => $request->conclusion,
-        ]);
+        if (empty($report->id)) {
+            Report::create($request->all());
+        } else {
+            $report->update($request->all());
+        }
         
         return redirect('/reports');
     }
     
+    public function view(Request $request, Report $report)
+    {
+        return view('reports.view', ['report' => $report]);
+    }
+    
+    public function edit(Request $request, Report $report)
+    {
+        return view('reports.edit', ['report' => $report]);
+    }
+    
+    public function toPdf(Request $request, Report $report)
+    {
+        return redirect('/reports');
+    }
+    
+    public function toMail(Request $request, Report $report)
+    {
+        return redirect('/reports');
+    }
+    
     /**
-     * Destroy the given task.
+     * Destroy the given report.
      *
      * @param  Request  $request
      * @param  Report  $report
@@ -71,7 +87,6 @@ class ReportController extends Controller
      */
    public function destroy(Request $request, Report $report)
    {
-       $this->authorize('destroy', $report);
        $report->delete();
        return redirect('/reports');
    }

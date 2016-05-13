@@ -69,4 +69,26 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+    
+    /**
+     * Overriden the default registration form to disable this option.
+     * 
+     * @param void
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
+    public function showRegistrationForm()
+    {
+        return redirect('login');
+    }
+
+    /**
+     * Overriden the default registration form to disable this option.
+     * 
+     * @param void
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
+    public function register()
+    {
+        return redirect('login');
+    }
 }
