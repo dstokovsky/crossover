@@ -8,7 +8,7 @@
         <div class="panel-body">
             <div class="container">
                 <div class="content">
-                    <h1 class="title text-center">Be right back.</div>
+                    <h1 class="title text-center">No, no, no, restricted area.</div>
                 </div>
             </div>
         </div>
