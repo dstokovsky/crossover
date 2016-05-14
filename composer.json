@@ -10,7 +10,8 @@
         "propaganistas/laravel-phone": "~2.0",
         "kodeine/laravel-acl": "~1.0@dev",
         "doctrine/dbal": "^2.5",
-        "laravelcollective/html": "~5.0"
+        "laravelcollective/html": "~5.0",
+        "barryvdh/laravel-dompdf": "0.6.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

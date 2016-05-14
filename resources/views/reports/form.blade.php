@@ -1,7 +1,8 @@
 <!-- New Report Form -->
 <div class="form-group">
-    {!! Form::label('user_id', 'Patient') !!}
-    {!! Form::text('user_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('report_user', 'Patient') !!}
+    {!! Form::hidden('user_id', null, ['id' => 'user_id']) !!}
+    {!! Form::text('report_user', null, ['class' => 'form-control']) !!}
 </div>
 <div class="form-group">
     {!! Form::label('procedure', 'Procedure') !!}

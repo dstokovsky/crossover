@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Mail;
+use URL;
+use Session;
 use App\Repositories\UserRepository;
 use App\User;
 
@@ -56,9 +58,12 @@ class PatientController extends Controller
                 'phone' => $request->phone,
             ]);
             $patient->assignRole('patient');
+            $message = 'Patient record for ' . $patient->name . ' has been successfully created.';
         } else {
             $user->update($request->all());
+            $message = 'Patient record has been successfully updated.';
         }
+        Session::flash('message', $message);
         
         return redirect('/patients');
     }
@@ -74,14 +79,20 @@ class PatientController extends Controller
             'button' => 'Save', 'password' => false, 'phone' => true]);
     }
     
-    public function update(Request $request, User $user)
-    {
-        return redirect('/patients/' . $user->id . '/view');
-    }
-    
     public function send(Request $request, User $user)
     {
-        return redirect('/reports');
+        $passcode = str_random();
+        $user->password = $passcode;
+        $user->save();
+        $mailData = ['user' => $user, 'passcode' => $passcode, 'app' => config('mail.from.name')];
+        Mail::send('emails.passcode', $mailData, function($message) use ($user) {
+            $message->from(config('mail.from.address'), config('mail.from.name'));
+            $message->to($user->email, $user->name);
+            $message->subject(config('mail.from.name') . ' Pass Code');
+        });
+        
+        Session::flash('message', 'New pass code has been sent to ' . $user->name . '.');
+        return redirect(URL::previous());
     }
     
     /**
@@ -91,9 +102,23 @@ class PatientController extends Controller
      * @param  User  $user
      * @return Response
      */
-   public function destroy(Request $request, User $user)
-   {
-       $user->delete();
-       return redirect('/patients');
-   }
+    public function destroy(Request $request, User $user)
+    {
+        $user->delete();
+        Session::flash('message', 'Patient ' . $user->name . ' has been successfully removed.');
+        return redirect('/patients');
+    }
+   
+    public function autocomplete(Request $request)
+    {
+        $patients = $this->users->patients();
+        $result = [];
+        foreach ($patients as $patient) {
+            if (stristr($patient->name, $request->term)) {
+                $result[] = ['value' => $patient->email, 'label' => $patient->name, 'desc' => $patient->id];
+            }
+        }
+        
+        return $result;
+    }
 }

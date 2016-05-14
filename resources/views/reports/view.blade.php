@@ -18,7 +18,11 @@
                         <div><strong>Patient</strong></div>
                     </td>
                     <td class="table-text">
+                        @permission('view.user')
+                        <div><a href="{{ url('patients/' . $report->user->id . '/view') }}">{{ $report->user->name }}</a></div>
+                        @else
                         <div>{{ $report->user->name }}</div>
+                        @endpermission
                     </td>
                 </tr>
                 <tr>
@@ -71,34 +75,25 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <form action="{{ url('reports/' . $report->id) }}" method="POST">
-                            {!! csrf_field() !!}
-                            @permission('delete.report')
-                            {!! method_field('DELETE') !!}
-                            @endpermission
-                            
-                            @permission('update.report')
-                            <a href="{{ url('reports/' . $report->id . '/edit') }}" class="btn btn-success"><i class="fa fa-btn fa-plus"></i>Edit</a>
-                            @endpermission
-                            
-                            @permission('send.report')
-                            <a href="{{ url('reports/' . $report->user->id . '/send') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Send Pass Code</a>
-                            @endpermission
+                        @permission('update.report')
+                        <a href="{{ url('reports/' . $report->id . '/edit') }}" class="btn btn-success"><i class="fa fa-btn fa-plus"></i>Edit</a>
+                        @endpermission
 
-                            @permission('export.pdf.report')
-                            <a href="{{ url('reports/' . $report->id . '/pdf') }}" class="btn btn-success"><i class="fa fa-btn fa-refresh"></i>Export to PDF</a>
-                            @endpermission
+                        @permission('send.report')
+                        <a href="{{ url('reports/' . $report->user->id . '/send') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Send Pass Code</a>
+                        @endpermission
 
-                            @permission('export.mail.report')
-                            <a href="{{ url('reports/' . $report->id . '/mail') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Mail Me</a>
-                            @endpermission
-                            
-                            @permission('delete.report')
-                            <button type="submit" id="delete-task-{{ $report->id }}" class="btn btn-danger">
-                                <i class="fa fa-btn fa-trash"></i>Delete
-                            </button>
-                            @endpermission
-                        </form>
+                        @permission('export.pdf.report')
+                        <a href="{{ url('reports/' . $report->id . '/pdf') }}" class="btn btn-success"><i class="fa fa-btn fa-refresh"></i>Export to PDF</a>
+                        @endpermission
+
+                        @permission('export.mail.report')
+                        <a href="{{ url('reports/' . $report->id . '/mail') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Mail Me</a>
+                        @endpermission
+
+                        @permission('delete.report')
+                        <a href="{{ url('reports/' . $report->id . '/delete') }}" class="btn btn-danger"><i class="fa fa-btn fa-trash"></i>Delete</a>
+                        @endpermission
                     </td>
                 </tr>
             </tbody>

@@ -59,18 +59,12 @@
                                 @endif
 
                                 <td>
-                                    <form action="{{ url($url . '/' . $user->id) }}" method="POST">
-                                        {!! csrf_field() !!}
-                                        {!! method_field('DELETE') !!}
-                                        <a href="{{ url($url . '/' . $user->id . '/view') }}" class="btn btn-default"><i class="fa fa-btn fa-user"></i>View</a>
-                                        <a href="{{ url($url . '/' . $user->id . '/edit') }}" class="btn btn-success"><i class="fa fa-btn fa-plus"></i>Edit</a>
-                                        @if ($sendPassCode)
-                                        <a href="{{ url('patients/' . $user->id . '/send') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Send Pass Code</a>
-                                        @endif
-                                        <button type="submit" id="delete-task-{{ $user->id }}" class="btn btn-danger">
-                                            <i class="fa fa-btn fa-trash"></i>Delete
-                                        </button>
-                                    </form>
+                                    <a href="{{ url($url . '/' . $user->id . '/view') }}" class="btn btn-default"><i class="fa fa-btn fa-user"></i>View</a>
+                                    <a href="{{ url($url . '/' . $user->id . '/edit') }}" class="btn btn-success"><i class="fa fa-btn fa-plus"></i>Edit</a>
+                                    @if ($sendPassCode)
+                                    <a href="{{ url('patients/' . $user->id . '/send') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Send Pass Code</a>
+                                    @endif
+                                    <a href="{{ url($url . '/' . $user->id . '/delete') }}" class="btn btn-danger"><i class="fa fa-btn fa-trash"></i>Delete</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -78,5 +72,7 @@
                 </table>
             </div>
         </div>
+    
+        {!! $users->links() !!}
     @endif
 @endsection

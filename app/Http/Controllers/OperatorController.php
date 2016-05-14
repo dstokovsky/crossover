@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Session;
 use App\Repositories\UserRepository;
 use App\User;
 
@@ -52,9 +52,12 @@ class OperatorController extends Controller
         if (empty($user->id)) {
             $operator = User::create($request->all());
             $operator->assignRole('operator');
+            $message = 'New lab operator has been successfully created.';
         } else {
             $user->update($request->all());
+            $message = 'Operator record has been successfully updated.';
         }
+        Session::flash('message', $message);
         
         return redirect('/operators');
     }
@@ -70,11 +73,6 @@ class OperatorController extends Controller
             'button' => 'Save', 'password' => true, 'phone' => false]);
     }
     
-    public function update(Request $request, User $user)
-    {
-        return redirect('/operators/' . $user->id . '/view');
-    }
-    
     /**
      * Destroy the given operator.
      *
@@ -85,6 +83,7 @@ class OperatorController extends Controller
    public function destroy(Request $request, User $user)
    {
        $user->delete();
+       Session::flash('message', 'Operator ' . $user->name . ' has been successfully removed.');
        return redirect('/operators');
    }
 }

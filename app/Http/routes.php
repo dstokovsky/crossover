@@ -59,7 +59,7 @@ Route::post('/reports/{report?}', [
     'can'          => 'create.report',
 ]);
 
-Route::delete('/reports/{report}', [
+Route::get('/reports/{report}/delete', [
     'uses'        => 'ReportController@destroy',
     'middleware'   => ['auth', 'acl'],
     'is'           => 'operator',
@@ -96,7 +96,7 @@ Route::post('/operators/{user?}', [
     'is'           => 'operator',
 ]);
 
-Route::delete('/operators/{user}', [
+Route::get('/operators/{user}/delete', [
     'uses'        => 'OperatorController@destroy',
     'middleware'   => ['auth', 'acl'],
     'is'           => 'operator',
@@ -126,7 +126,7 @@ Route::post('/patients/{user?}', [
     'is'           => 'operator',
 ]);
 
-Route::delete('/patients/{user}', [
+Route::get('/patients/{user}/delete', [
     'uses'        => 'PatientController@destroy',
     'middleware'   => ['auth', 'acl'],
     'is'           => 'operator',
@@ -134,6 +134,12 @@ Route::delete('/patients/{user}', [
 
 Route::get('/patients/{user}/send', [
     'uses'        => 'PatientController@send',
+    'middleware'   => ['auth', 'acl'],
+    'is'           => 'operator',
+]);
+
+Route::get('/patients/autocomplete', [
+    'uses'        => 'PatientController@autocomplete',
     'middleware'   => ['auth', 'acl'],
     'is'           => 'operator',
 ]);

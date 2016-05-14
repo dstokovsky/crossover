@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\User;
 use App\Report;
+use DB;
 
 class ReportRepository
 {
@@ -15,6 +16,12 @@ class ReportRepository
      */
     public function all(User $user)
     {
-        return $user->is('operator') ? Report::all() : $user->reports();
+        return $user->is('operator') ? 
+            DB::table('reports')
+                ->select('users.id AS userId', 'users.name AS userName', 'reports.*')
+                ->join('users', 'reports.user_id', '=', 'users.id')
+                ->orderBy('reports.created_at', 'desc')
+                ->paginate(10) : 
+            $user->reports()->paginate(10);
     }
 }

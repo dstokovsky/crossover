@@ -14,7 +14,7 @@ class UserRepository
      */
     public function patients()
     {
-        return User::role('patient')->get();
+        return User::role('patient')->orderBy('created_at', 'desc')->paginate(10);
     }
     
     /**
@@ -25,6 +25,6 @@ class UserRepository
      */
     public function operators()
     {
-        return User::role('operator')->get();
+        return User::role('operator')->orderBy('created_at', 'desc')->paginate(10);
     }
 }
