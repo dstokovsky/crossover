@@ -2,7 +2,7 @@
 <div class="form-group">
     {!! Form::label('report_user', 'Patient') !!}
     {!! Form::hidden('user_id', null, ['id' => 'user_id']) !!}
-    {!! Form::text('report_user', null, ['class' => 'form-control']) !!}
+    {!! Form::text('report_user', isset($report->user->name) ? $report->user->name : null, ['class' => 'form-control']) !!}
 </div>
 <div class="form-group">
     {!! Form::label('procedure', 'Procedure') !!}
