@@ -15,6 +15,10 @@ Route::get('/', function(){
     return Auth::guest() ? redirect('login') : redirect('/reports');
 });
 
+Route::get('/home', function(){
+    return redirect('/');
+});
+
 Route::auth();
 
 Route::get('/reports', [

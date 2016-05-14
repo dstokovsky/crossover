@@ -46,7 +46,11 @@
                                 </td>
                                 <!-- User Name -->
                                 <td class="table-text">
+                                    @permission('view.user')
                                     <div><a href="{{ url('patients/' . $report->userId . '/view') }}">{{ $report->userName }}</a></div>
+                                    @else
+                                    <div>{{ $report->userName }}</div>
+                                    @endpermission
                                 </td>
                                 <!-- Goal of Report -->
                                 <td class="table-text">

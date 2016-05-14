@@ -82,8 +82,16 @@ class OperatorController extends Controller
      */
    public function destroy(Request $request, User $user)
    {
-       $user->delete();
-       Session::flash('message', 'Operator ' . $user->name . ' has been successfully removed.');
-       return redirect('/operators');
+       $messageType = 'message';
+       $message = 'Operator ' . $user->name . ' has been successfully removed.';
+        if ($user->id !== 1 && $request->user()->id !== $user->id) {
+            $user->delete();
+        } else {
+            $messageType = 'danger';
+            $message = 'It is prohibited to delete main system admin or yourself.';
+        }
+        Session::flash($messageType, $message);
+        
+        return redirect('/operators');
    }
 }

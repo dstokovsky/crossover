@@ -53,7 +53,9 @@
                         @if ($sendPassCode)
                         <a href="{{ url('patients/' . $user->id . '/send') }}" class="btn btn-success"><i class="fa fa-btn fa-envelope"></i>Send Pass Code</a>
                         @endif
+                        @if ($user->id !== 1 && Auth::user()->id !== $user->id)
                         <a href="{{ url($url . '/' . $user->id . '/delete') }}" class="btn btn-danger"><i class="fa fa-btn fa-trash"></i>Delete</a>
+                        @endif
                     </td>
                 </tr>
             </tbody>
